@@ -1,8 +1,15 @@
 {
   "name": "customcommandbuttons",
-  "displayName": "CustomCommandButtons",
-  "description": "Add Custom Buttons to VSCode UI.",
+  "displayName": "VSCode Custom Command Buttons",
+  "description": "Add Custom Command Buttons to VSCode UI.",
   "version": "0.0.1",
+  "license": "SEE LICENSE IN LICENSE",
+  "publisher": "hnbsoft",
+  "icon": "images/icon.png",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hnbsoft/VSCodeCustomCommandButtons.git"
+  },
   "engines": {
     "vscode": "^1.75.0"
   },
@@ -10,14 +17,27 @@
     "Other"
   ],
   "activationEvents": [
-    "onCommand:customcommandbuttons.helloWorld"
+    "onLanguage:shellscript"
   ],
   "main": "./extension.js",
   "contributes": {
-    "commands": [{
-      "command": "customcommandbuttons.helloWorld",
-      "title": "Hello World"
-    }]
+    "commands": [
+      {
+        "command": "customcommandbuttons.command.hnbShellChecker",
+        "title": "Execute hnb-shell-checker",
+        "category": "HNB",
+        "icon": "$(rocket)"
+      }
+    ],
+    "menus": {
+      "editor/title": [
+        {
+          "when": "resourceLangId == shellscript",
+          "command": "customcommandbuttons.command.hnbShellChecker",
+          "group": "navigation"
+        }
+      ]
+    }
   },
   "scripts": {
     "lint": "eslint .",
