@@ -24,7 +24,7 @@
     "commands": [
       {
         "command": "customcommandbuttons.command.hnbShellChecker",
-        "title": "Execute hnb-shell-checker",
+        "title": "Execute hnb-shell-checker command",
         "category": "HNB",
         "icon": "$(rocket)"
       }
