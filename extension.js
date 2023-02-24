@@ -49,7 +49,7 @@ function executeCommandInTerminal(commandText) {
     }
     else {
         // No active Terminal found, just show a message to user.
-        vscode.window.showInformationMessage('HNB: Command not executed in terminal (No active terminal).');
+        vscode.window.showInformationMessage('HNB: Command not executed in terminal (No active terminal.1).');
     }
 }
 

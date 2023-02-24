@@ -2,7 +2,7 @@
   "name": "customcommandbuttons",
   "displayName": "VSCode Custom Command Buttons",
   "description": "Add Custom Command Buttons to VSCode UI.",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "license": "SEE LICENSE IN LICENSE",
   "publisher": "hnbsoft",
   "icon": "images/icon.png",
