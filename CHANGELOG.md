@@ -4,6 +4,6 @@ All notable changes to the "customcommandbuttons" extension will be documented i
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
-## [Unreleased]
+## [Released]
 
-- Initial release
+- Initial release v1.0.0 2023.02.24
