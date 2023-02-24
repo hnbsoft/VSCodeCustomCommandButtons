@@ -17,11 +17,20 @@
     "Other"
   ],
   "activationEvents": [
+    "onLanguage:html",
+    "onLanguage:javascript",
+    "onLanguage:css",
     "onLanguage:shellscript"
   ],
   "main": "./extension.js",
   "contributes": {
     "commands": [
+      {
+        "command": "customcommandbuttons.command.hnbLinter",
+        "title": "Execute hnb-linter command",
+        "category": "HNB",
+        "icon": "$(eye)"
+      },
       {
         "command": "customcommandbuttons.command.hnbShellChecker",
         "title": "Execute hnb-shell-checker command",
@@ -31,6 +40,11 @@
     ],
     "menus": {
       "editor/title": [
+        {
+            "when": "resourceLangId == html || resourceLangId == javascript || resourceLangId == css",
+            "command": "customcommandbuttons.command.hnbLinter",
+            "group": "navigation"
+        },
         {
           "when": "resourceLangId == shellscript",
           "command": "customcommandbuttons.command.hnbShellChecker",

@@ -2,20 +2,42 @@
 // Import the module and reference it with the alias vscode in your code below
 const vscode = require('vscode');
 
-// Helper - Returns the current opened(actived) file path or `undefined`
-function getCurrentFilePath() {
+// Helper - Returns the user's home directory path or `undefined`
+function getUserHomeDir() {
+    return process.env['HOME'];
+}
+
+// Helper - Returns the current opened(actived) file Document or `undefined`
+function getCurrentFileDocument() {
     // The return value
-    var retPath = undefined;
+    var retDocument = undefined;
 
     // Find the current editor
     let currentEditor = vscode.window.activeTextEditor;
     if (currentEditor) {
         if (!(currentEditor.document.isUntitled)) {
-            retPath = currentEditor.document.fileName;
+            retDocument = currentEditor.document;
         }
     }
 
-    return retPath;
+    return retDocument;
+}
+
+// Helper Get Current Working Directory path or `undefined`
+function getUserCwdDir() {
+    // The return value, default to user home.
+    var retDirPath = getUserHomeDir();
+
+    let curFileDoc = getCurrentFileDocument();
+    if (curFileDoc) {
+        let curWorkspaceFolder = vscode.workspace.getWorkspaceFolder(curFileDoc.uri);
+        if (curWorkspaceFolder) {
+            retDirPath = curWorkspaceFolder.uri.fsPath;
+        }
+    }
+
+    // Returns
+    return retDirPath;
 }
 
 // Helper - Execute a command in Terminal
@@ -33,13 +55,34 @@ function executeCommandInTerminal(commandText) {
 
 // Run a given `Terminal Command` with `Current File Path` as its argument.
 function runTerminalCommandWithCurrentFilePath(commandName) {
-    let currentFilePath = getCurrentFilePath();
-    if (currentFilePath) {
+    let currentFileDoc = getCurrentFileDocument();
+    if (currentFileDoc) {
+        let currentFilePath = currentFileDoc.fileName;
         let commandWithArgument = commandName + ' ' + '"' + currentFilePath + '"';
         executeCommandInTerminal(commandWithArgument);
     }
     else {
         vscode.window.showInformationMessage('HNB: Failed to get current file (No active editor, untitled, etc).');
+    }
+}
+
+// Run a given `Terminal Command` with `Current Working Directory`, `Current File Path` as its arguments.
+function runTerminalCommandWithCwdAndCurrentFilePath(commandName) {
+    let curCwdDir = getUserCwdDir();
+    if (curCwdDir)
+    {
+        let curFileDoc = getCurrentFileDocument();
+        if (curFileDoc) {
+            let currentFilePath = curFileDoc.fileName;
+            let commandWithArgument = commandName + ' ' + '"' + curCwdDir + '"' + ' ' + '"' + currentFilePath + '"';
+            executeCommandInTerminal(commandWithArgument);
+        }
+        else {
+            vscode.window.showInformationMessage('HNB: Failed to get current doc (No active editor, untitled, etc).');
+        }
+    }
+    else {
+        vscode.window.showInformationMessage('HNB: Failed to get CWD directory (No Home, No workspace, etc).');
     }
 }
 
@@ -64,6 +107,14 @@ function activate(context) {
         vscode.commands.registerCommand('customcommandbuttons.command.hnbShellChecker', function () {
             // The code you place here will be executed every time your command is executed
             runTerminalCommandWithCurrentFilePath('hnb-shell-checker');
+        })
+    );
+
+    // The linter terminal command
+    context.subscriptions.push(
+        vscode.commands.registerCommand('customcommandbuttons.command.hnbLinter', function () {
+            // The code you place here will be executed every time your command is executed
+            runTerminalCommandWithCwdAndCurrentFilePath('hnb-linter');
         })
     );
 }
